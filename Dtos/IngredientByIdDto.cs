@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ingredientsApiCSharp.Models
+namespace ingredientsApiCSharp.Dtos
 {
-    public class Ingredients
+    public class GetIngredientDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }

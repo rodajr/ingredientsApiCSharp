@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ingredientsApiCSharp.Models
+namespace ingredientsApiCSharp.Dtos
 {
-    public class Ingredients
+    public class CreateIngredientDto
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
         public float Amount  { get; set; } = 0.00F;
         public float Cost  { get; set; } =  0.00F;

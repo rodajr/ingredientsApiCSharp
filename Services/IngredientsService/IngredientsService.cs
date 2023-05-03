@@ -1,3 +1,4 @@
+global using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +9,35 @@ namespace ingredientsApiCSharp.Services.IngredientsService
     public class IngredientsService : IIngredientsService
     {
         private static List<Ingredients> ingredients = new List<Ingredients> { new Ingredients() };
+        private readonly IMapper _mapper;
 
-        public List<Ingredients> AllIngredients()
+        public IngredientsService(IMapper mapper)
         {
-             return ingredients;
+            _mapper = mapper;
+                    
         }
 
-        public List<Ingredients> CreateIngredient(Ingredients newIngredient)
+        public async Task<ServiceResponse<List<GetIngredientDto>>> AllIngredients()
         {
-
-            ingredients.Add(newIngredient);
-            return ingredients;
+            var serviceResponse = new ServiceResponse<List<GetIngredientDto>>();
+            serviceResponse.Data = ingredients.Select(i => _mapper.Map<GetIngredientDto>(i)).ToList();
+            return serviceResponse;
         }
 
-        public Ingredients IngredientById(int id)
+        public async Task<ServiceResponse<List<GetIngredientDto>>> CreateIngredient(CreateIngredientDto newIngredient)
         {
-            return ingredients.FirstOrDefault(ingredient => ingredient.Id == id);
+            var serviceResponse = new ServiceResponse<List<GetIngredientDto>>();
+            ingredients.Add(_mapper.Map<Ingredients>(newIngredient));
+            serviceResponse.Data = ingredients.Select(i => _mapper.Map<GetIngredientDto>(i)).ToList();
+            return serviceResponse;
         }
+
+        public async Task<ServiceResponse<GetIngredientDto>> IngredientById(int id)
+        {
+            var serviceResponse = new ServiceResponse<GetIngredientDto>();
+            var ingredient = ingredients.FirstOrDefault(ingredient => ingredient.Id == id);
+            serviceResponse.Data = _mapper.Map<GetIngredientDto>(ingredient);
+            return serviceResponse;            
+        }       
     }
 }

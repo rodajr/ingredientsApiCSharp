@@ -19,37 +19,21 @@ namespace ingredientsApiCSharp.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Ingredients> all()
+        public async Task<ActionResult<ServiceResponse<GetIngredientDto>>> all()
         {
-            return Ok(_ingredientsService.AllIngredients());
+            return Ok(await _ingredientsService.AllIngredients());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Ingredients> single(int id)
+        public async Task<ActionResult<ServiceResponse<GetIngredientDto>>> single(int id)
         {
-            return Ok(_ingredientsService.IngredientById(id));
+            return Ok(await _ingredientsService.IngredientById(id));
         }
 
         [HttpPost]
-        public ActionResult<Ingredients> create(Ingredients newIngredient)
+        public async Task<ActionResult<ServiceResponse<List<GetIngredientDto>>>> create(CreateIngredientDto newIngredient)
         {
-            return Ok(_ingredientsService.CreateIngredient(newIngredient));
+            return Ok(await _ingredientsService.CreateIngredient(newIngredient));
         }
-        
-        // [HttpPost]
-        // public ActionResult<Ingredients> update(Ingredients newIngredient)
-        // {
-
-        //     ingredients.Add(newIngredient);
-        //     return Ok(ingredients);
-        // }
-        
-        // [HttpDelete]
-        // public ActionResult<Ingredients> delete(Ingredients newIngredient)
-        // {
-
-        //     ingredients.Add(newIngredient);
-        //     return Ok(ingredients);
-        // }
     }
 }

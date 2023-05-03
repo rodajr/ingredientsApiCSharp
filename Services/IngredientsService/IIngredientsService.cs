@@ -7,8 +7,8 @@ namespace ingredientsApiCSharp.Services.IngredientsService
 {
     public interface IIngredientsService
     {
-        List<Ingredients> AllIngredients();
-        Ingredients IngredientById(int id);
-        List<Ingredients> CreateIngredient(Ingredients newIngredient);
+        Task<ServiceResponse<List<GetIngredientDto>>> AllIngredients();
+        Task<ServiceResponse<GetIngredientDto>> IngredientById(int id);
+        Task<ServiceResponse<List<GetIngredientDto>>> CreateIngredient(CreateIngredientDto newIngredient);
     }
 }
