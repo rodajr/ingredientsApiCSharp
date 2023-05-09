@@ -8,7 +8,6 @@ namespace ingredientsApiCSharp.Services.IngredientsService
 {
     public class IngredientsService : IIngredientsService
     {
-        private static List<Ingredients> ingredients = new List<Ingredients> { new Ingredients() };
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
@@ -30,8 +29,38 @@ namespace ingredientsApiCSharp.Services.IngredientsService
         public async Task<ServiceResponse<List<GetIngredientDto>>> CreateIngredient(CreateIngredientDto newIngredient)
         {
             var serviceResponse = new ServiceResponse<List<GetIngredientDto>>();
-            ingredients.Add(_mapper.Map<Ingredients>(newIngredient));
-            serviceResponse.Data = ingredients.Select(i => _mapper.Map<GetIngredientDto>(i)).ToList();
+            var ingredients = _mapper.Map<Ingredients>(newIngredient);
+            _context.Ingredients.Add(ingredients);
+            await _context.SaveChangesAsync();
+
+            serviceResponse.Data = await _context.Ingredients.Select(i => _mapper.Map<GetIngredientDto>(i)).ToListAsync();
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetIngredientDto>>> DeleteIngredients(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetIngredientDto>>();
+
+            try
+            {
+                var ingredient = await _context.Ingredients.FirstAsync(ingredient => ingredient.Id == id);
+                if (ingredient is null)
+                {
+                    throw new Exception($"Ingredient ID '{id}' not found");
+                }
+
+                _context.Ingredients.Remove(ingredient);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = await _context.Ingredients.Select(i => _mapper.Map<GetIngredientDto>(i)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = e.Message;                
+            }
+
             return serviceResponse;
         }
 
@@ -43,18 +72,31 @@ namespace ingredientsApiCSharp.Services.IngredientsService
             return serviceResponse;            
         }
 
-        public async Task<ServiceResponse<List<GetIngredientDto>>> UpdateIngredient(UpdateIngredientDto updateIngredient)
+        public async Task<ServiceResponse<GetIngredientDto>> UpdateIngredient(UpdateIngredientDto updateIngredient)
         {
             var serviceResponse = new ServiceResponse<GetIngredientDto>();
-            var ingredient = ingredients.FirstOrDefault(ingredient => ingredient.Id == updateIngredient.Id);
 
-            ingredient.Name = updateIngredient.Name;
-            ingredient.Amount = updateIngredient.Amount;
-            ingredient.Cost = updateIngredient.Cost;
-            ingredient.Unit = updateIngredient.Unit;
-            ingredient.Updated_at = updateIngredient.Updated_at;
+            try
+            {
+                var ingredient = await _context.Ingredients.FirstOrDefaultAsync(ingredient => ingredient.Id == updateIngredient.Id);
+                if (ingredient is null)
+                {
+                    throw new Exception($"Ingredient ID '{updateIngredient.Id}' not found");
+                }
 
-            serviceResponse.Data = _mapper.Map<GetIngredientDto>(ingredient);
+                ingredient.Name = updateIngredient.Name;
+                ingredient.Amount = updateIngredient.Amount;
+                ingredient.Cost = updateIngredient.Cost;
+                ingredient.Unit = updateIngredient.Unit;
+                ingredient.Updated_at = updateIngredient.Updated_at;
+
+                serviceResponse.Data = _mapper.Map<GetIngredientDto>(ingredient);                
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = e.Message;                
+            }
 
             return serviceResponse;
         }

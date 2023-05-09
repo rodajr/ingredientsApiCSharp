@@ -39,7 +39,23 @@ namespace ingredientsApiCSharp.Controllers
         [HttpPut]
         public async Task<ActionResult<ServiceResponse<List<GetIngredientDto>>>> update(UpdateIngredientDto updatedIngredient)
         {
-            return Ok(await _ingredientsService.UpdateIngredient(updatedIngredient));
+            var response = await _ingredientsService.UpdateIngredient(updatedIngredient);
+            if (response.Data is null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetIngredientDto>>> delete(int id)
+        {
+            var response = await _ingredientsService.DeleteIngredients(id);
+            if (response.Data is null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
         }
     }
 }

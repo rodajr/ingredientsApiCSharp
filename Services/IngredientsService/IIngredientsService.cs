@@ -10,6 +10,7 @@ namespace ingredientsApiCSharp.Services.IngredientsService
         Task<ServiceResponse<List<GetIngredientDto>>> AllIngredients();
         Task<ServiceResponse<GetIngredientDto>> IngredientById(int id);
         Task<ServiceResponse<List<GetIngredientDto>>> CreateIngredient(CreateIngredientDto newIngredient);
-        Task<ServiceResponse<List<GetIngredientDto>>> UpdateIngredient(UpdateIngredientDto updateIngredient);
+        Task<ServiceResponse<GetIngredientDto>> UpdateIngredient(UpdateIngredientDto updateIngredient);
+        Task<ServiceResponse<List<GetIngredientDto>>> DeleteIngredients(int id);
     }
 }

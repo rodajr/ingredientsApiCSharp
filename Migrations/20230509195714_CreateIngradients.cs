@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ingredientsApiCSharp.Migrations
 {
     /// <inheritdoc />
-    public partial class IngredientsCreate : Migration
+    public partial class CreateIngradients : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

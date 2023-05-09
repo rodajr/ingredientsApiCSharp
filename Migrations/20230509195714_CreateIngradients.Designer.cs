@@ -11,8 +11,8 @@ using ingredientsApiCSharp.Data;
 namespace ingredientsApiCSharp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230503025402_IngredientsCreate")]
-    partial class IngredientsCreate
+    [Migration("20230509195714_CreateIngradients")]
+    partial class CreateIngradients
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
