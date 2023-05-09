@@ -35,5 +35,11 @@ namespace ingredientsApiCSharp.Controllers
         {
             return Ok(await _ingredientsService.CreateIngredient(newIngredient));
         }
+        
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<List<GetIngredientDto>>>> update(UpdateIngredientDto updatedIngredient)
+        {
+            return Ok(await _ingredientsService.UpdateIngredient(updatedIngredient));
+        }
     }
 }
