@@ -90,6 +90,7 @@ namespace ingredientsApiCSharp.Services.IngredientsService
                 ingredient.Unit = updateIngredient.Unit;
                 ingredient.Updated_at = updateIngredient.Updated_at;
 
+                await _context.SaveChangesAsync();
                 serviceResponse.Data = _mapper.Map<GetIngredientDto>(ingredient);                
             }
             catch (Exception e)
